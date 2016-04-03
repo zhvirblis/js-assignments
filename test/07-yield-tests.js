@@ -452,13 +452,13 @@ describe('07-yield-tasks', function() {
             tasks.async(function*() {
                 let a = yield new Promise((resolve)=> setTimeout(()=>resolve(5), 100)),
                     b = yield Promise.resolve(6);
-                assert.equal(a, 5, '');
-                assert.equal(b, 6, '');
+                assert.equal(a, 5);
+                assert.equal(b, 6);
 
                 return yield new Promise((resolve)=> resolve(a + b));
             }).then(value=> {
                 try {
-                    assert.equal(value, 11, '');
+                    assert.equal(value, 11);
                     resolve()
                 } catch (err) {
                     reject(err);
@@ -476,12 +476,8 @@ describe('07-yield-tasks', function() {
             }).then(()=> {
                 reject();
             }, (err)=> {
-                try {
-                    assert.equal(err.message, 'test error', '');
-                    resolve()
-                } catch (err) {
-                    reject(err);
-                }
+                if (err.message === 'test error') resolve();
+                else reject(err);
             });
         });
     });
