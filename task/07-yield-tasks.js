@@ -141,6 +141,8 @@ function* mergeSortedSequences(source1, source2) {
  *      var b = yield Promise.resolve(6);
  *      return a + b;
  *   }).then(value=>console.log(value))  => 11
+ *
+ *   Most popular implementation of the logic in npm https://www.npmjs.com/package/co
  */
 function async(generator) {
     throw new Error('Not implemented');
