@@ -235,7 +235,12 @@ function getRectangleString(width, height) {
  *
  */
 function encodeToRot13(str) {
-    throw new Error('Not implemented');
+    const lettersCount = 26;
+    const lowercaseZCode = 'z'.charCodeAt(0);
+    const uppercaseZCode = 'Z'.charCodeAt(0);
+    return str.replace(/[a-zA-Z]/g, function(str){
+        return String.fromCharCode((str<="Z" ? uppercaseZCode:lowercaseZCode)>=(str=str.charCodeAt(0)+13)?str:str-lettersCount);
+    }); 
 }
 
 /**
@@ -287,6 +292,8 @@ function getCardId(value) {
     let code = {A:0, J:10, Q:11, K:12};
     let symbols = {'♣':0,'♦':1,'♥':2, '♠':3};
     let index = 0;
+    const FOR_TEN = 9;
+    const SYMBOL_STEP = 13;
 
     if(code[value[0]] || code[value[0]]===0){
         index+=code[value[0]];
@@ -295,10 +302,10 @@ function getCardId(value) {
         index+=Number(value[0])-1;
     }
     if(value[1]=='0'){
-        index=symbols[value[1]]*13+10;
+        index=symbols[value[2]]*SYMBOL_STEP+FOR_TEN;
     }
     else{
-        index+=symbols[value[1]]*13;
+        index+=symbols[value[1]]*SYMBOL_STEP;
     }
     return index;
 }
