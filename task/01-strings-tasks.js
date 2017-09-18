@@ -55,7 +55,7 @@ function getStringLength(value) {
  *   'Chuck','Norris'  => 'Hello, Chuck Norris!'
  */
 function getStringFromTemplate(firstName, lastName) {
-    return 'Hello, ' + firstName + ' ' + lastName+ '!';
+    return `Hello, ${firstName} ${lastName}!`;
 }
 
 /**
@@ -257,10 +257,7 @@ function encodeToRot13(str) {
  *   isString(new String('test')) => true
  */
 function isString(value) {
-    if(typeof value=='object'){
-        return Object.prototype.toString.call(value)=='[object String]';
-    }
-    return (typeof value)=='string';
+    return (typeof value)=='string'||value instanceof String;
 }
 
 
