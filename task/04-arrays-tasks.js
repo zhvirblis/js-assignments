@@ -490,12 +490,12 @@ function sortCitiesArray(arr) {
  *           [0,0,0,0,1]]   
  */
 function getIdentityMatrix(n) {
-    let result = new Array(n).fill(new Array(n).fill(0));
-    
-    return result.map((item, indexOfRow) => {
-        return item.map((item, indexOfColumn) => {
-            return Number(indexOfRow == indexOfColumn);
-        });
+    return new Array(n).fill(0).map((x, index) => {
+        let arr = new Array(n);
+        arr.fill(0);
+        arr[index] = 1;
+        index++;
+        return arr;
     });
 }
 
