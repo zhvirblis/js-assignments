@@ -286,25 +286,11 @@ function isString(value) {
  *   'K♠' => 51
  */
 function getCardId(value) {
-    let code = {A:0, J:10, Q:11, K:12};
-    let symbols = {'♣':0,'♦':1,'♥':2, '♠':3};
-    let index = 0;
-    const FOR_TEN = 9;
-    const SYMBOL_STEP = 13;
-
-    if(code[value[0]] || code[value[0]]===0){
-        index+=code[value[0]];
-    }
-    else{
-        index+=Number(value[0])-1;
-    }
-    if(value[1]=='0'){
-        index=symbols[value[2]]*SYMBOL_STEP+FOR_TEN;
-    }
-    else{
-        index+=symbols[value[1]]*SYMBOL_STEP;
-    }
-    return index;
+    let str = ['A♣','2♣','3♣','4♣','5♣','6♣','7♣','8♣','9♣','10♣','J♣','Q♣','K♣',
+    'A♦','2♦','3♦','4♦','5♦','6♦','7♦','8♦','9♦','10♦','J♦','Q♦','K♦',
+    'A♥','2♥','3♥','4♥','5♥','6♥','7♥','8♥','9♥','10♥','J♥','Q♥','K♥',
+    'A♠','2♠','3♠','4♠','5♠','6♠','7♠','8♠','9♠','10♠','J♠','Q♠','K♠']
+    return str.indexOf(value);
 }
 
 
