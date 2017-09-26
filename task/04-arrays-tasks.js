@@ -494,7 +494,6 @@ function getIdentityMatrix(n) {
         let arr = new Array(n);
         arr.fill(0);
         arr[index] = 1;
-        index++;
         return arr;
     });
 }
