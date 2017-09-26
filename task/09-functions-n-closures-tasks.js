@@ -184,10 +184,7 @@ function logger(func, logFunc) {
  */
 function partialUsingArguments(fn) {
     let firstFuncValues = (Array.from(arguments)).slice(1);
-    return function(){
-        let secondFuncValues = Array.from(arguments);
-        return (fn.apply(null, firstFuncValues.concat(secondFuncValues)));
-    }
+    return arguments[0].bind(null, ...firstFuncValues);
 }
 
 
