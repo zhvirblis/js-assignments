@@ -25,9 +25,9 @@
 function Rectangle(width, height) {
     this.width = width;
     this.height = height;
-    this.getArea = function(){
-        return width * height;        
-    }
+}
+Rectangle.prototype.getArea = function(){
+    return this.height*this.width;
 }
 
 
@@ -58,7 +58,9 @@ function getJSON(obj) {
  *
  */
 function fromJSON(proto, json) {
-    throw new Error('Not implemented');
+    let obj = JSON.parse(json);
+    Object.setPrototypeOf(obj, proto);
+    return obj;
 }
 
 
@@ -110,34 +112,117 @@ function fromJSON(proto, json) {
  *  For more examples see unit tests.
  */
 
+const CSS_SELECTOR_ERRORS = [
+    'Element, id and pseudo-element should not occur more then one time inside the selector',
+    'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element'
+];
+
+function CssSelector(combine){
+    combine = combine || '';
+
+    let values = {
+        element: '',
+        id: '',
+        class: '',
+        attr: '',
+        pseudoClass: '',
+        pseudoElement: ''
+    };
+
+    function checkOrder(currentPart) {
+        let b = false;
+        for (let i in values)
+            if (values.hasOwnProperty(i))
+                if (b && values[i])
+                    throw new Error(CSS_SELECTOR_ERRORS[1]);
+                else if (!b && i === currentPart)
+                    b = true;
+    } 
+
+    this.element = function(value) {
+        if (values.element) {
+            throw new Error(CSS_SELECTOR_ERRORS[0]);
+        }
+        checkOrder('element');
+        values.element = value;
+        return this;
+    };
+
+    this.id = function(value) {
+        if (values.id) {
+            throw new Error(CSS_SELECTOR_ERRORS[0]);
+        }
+        checkOrder('id');
+        values.id = '#' + value;
+        return this;
+    };
+
+    this.class = function(value) {
+        checkOrder('class');
+        values.class += '.' + value;
+        return this;
+    };
+
+    this.attr = function(value) {
+        checkOrder('attr');
+        values.attr += '[' + value + ']';
+        return this;
+    };
+
+    this.pseudoClass = function(value) {
+        checkOrder('pseudoClass');
+        values.pseudoClass += ':' + value;
+        return this;
+    };
+
+    this.pseudoElement = function(value) {
+        if(values.pseudoElement) {
+            throw new Error(CSS_SELECTOR_ERRORS[0]);
+        }
+        checkOrder('pseudoElement');
+        values.pseudoElement = '::' + value;
+        return this;
+    };
+
+    this.stringify = function() {
+        let result = '';
+        for (let i in values){
+            if(values.hasOwnProperty(i)){
+                result += values[i];
+            }
+        }
+        return combine + result;
+    }
+}
+
 const cssSelectorBuilder = {
 
     element: function(value) {
-        throw new Error('Not implemented');
+        return new CssSelector().element(value);
     },
 
     id: function(value) {
-        throw new Error('Not implemented');
+        return new CssSelector().id(value);
     },
 
     class: function(value) {
-        throw new Error('Not implemented');
+        return new CssSelector().class(value);
     },
 
     attr: function(value) {
-        throw new Error('Not implemented');
+        return new CssSelector().attr(value);
     },
 
     pseudoClass: function(value) {
-        throw new Error('Not implemented');
+        return new CssSelector().pseudoClass(value);
     },
 
     pseudoElement: function(value) {
-        throw new Error('Not implemented');
+        return new CssSelector().pseudoElement(value);
     },
 
     combine: function(selector1, combinator, selector2) {
-        throw new Error('Not implemented');
+        return new CssSelector(selector1.stringify() + ` ${combinator} ` + selector2.stringify());
     },
 };
 
