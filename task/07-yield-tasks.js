@@ -206,13 +206,13 @@ function* mergeSortedSequences(source1, source2) {
  */
 function async(generator) {
     let gen = generator();
-    return Promise.resolve((function nextStep(x){
+    return (function nextStep(x){
         let promise = gen.next(x);
         if(promise.done){
             return promise.value; 
         }
         return promise.value.then(nextStep);
-    })());
+    })();
 }
 
 
